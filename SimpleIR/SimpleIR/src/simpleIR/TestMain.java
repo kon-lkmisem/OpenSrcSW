@@ -14,6 +14,9 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.snu.ids.kkma.index.Keyword;
+import org.snu.ids.kkma.index.KeywordExtractor;
+import org.snu.ids.kkma.index.KeywordList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -88,6 +91,9 @@ public class TestMain {
 		StreamResult result = new StreamResult(new FileOutputStream(new File("result/collection.xml")));
 		
 		transformer.transform(source, result);
+	
+		index output = new index("result/collection.xml");
+		output.collcection_to_index();
 	}
 
 }
