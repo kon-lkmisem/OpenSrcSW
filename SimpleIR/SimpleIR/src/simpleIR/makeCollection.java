@@ -9,6 +9,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -25,19 +26,27 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class TestMain {
-
-	public static void main(String[] args) throws IOException, ParserConfigurationException, TransformerException {
-		String path = "input";
+public class makeCollection {
+	
+	String path;
+	public makeCollection(String path) {
+		super();
+		this.path = path;
+	}
+	
+	
+	public void html_to_xml() throws ParserConfigurationException, FileNotFoundException, TransformerException {
 		File file = new File(path);
 		File list[] = file.listFiles();
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		ArrayList<File> h_list = new ArrayList();
 		for(int i = 0; i<list.length; i++) {
-			System.out.println(list[i]);
 			if (list[i].toString().contains(".html")){
 				h_list.add(list[i]);
 			}
+		}
+		for(int i =0 ;i<list.length;i++) {
+			System.out.println(list[i]);
 		}
 		String content[] = new String[h_list.size()];
 		for(int i = 0;i<h_list.size();i++) {
@@ -57,9 +66,10 @@ public class TestMain {
 	           
 	        }
 			
-			System.out.println(content[i]);
+			
 
 		}
+		
 		
 		DocumentBuilderFactory docFacroty = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = docFacroty.newDocumentBuilder();
@@ -75,6 +85,7 @@ public class TestMain {
 			doc.setAttribute("id", String.valueOf(i));
 			
 			Element title = xml.createElement("title");
+			System.out.println(content[i].split("\n")[0]);
 			title.appendChild(xml.createTextNode(content[i].split("\n")[0]));
 			doc.appendChild(title);
 			
@@ -88,12 +99,13 @@ public class TestMain {
 		transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 		
 		DOMSource source = new DOMSource(xml);
-		StreamResult result = new StreamResult(new FileOutputStream(new File("result/collection.xml")));
+		StreamResult result = new StreamResult(new FileOutputStream(new File(path+"/collection.xml")));
 		
 		transformer.transform(source, result);
-	
-		index output = new index("result/collection.xml");
-		output.collcection_to_index();
+
+		
 	}
+
+	
 
 }

@@ -10,7 +10,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -22,18 +21,20 @@ import org.snu.ids.kkma.index.KeywordList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-public class index {
-	static String path;
+
+public class makeKeyword {
+static String path;
 	
-	public index(String string) {
+	public makeKeyword(String string) {
 		path = string;
 	}
 
 	static void collcection_to_index() throws ParserConfigurationException, FileNotFoundException, TransformerException {  
-	File xmlfile = new File(path);
+	File xmlfile = new File(path+"/collection.xml");
 	String t="";
 	try{
-        Scanner scan = new Scanner(xmlfile);
+        @SuppressWarnings("resource")
+		Scanner scan = new Scanner(xmlfile);
         
         while(scan.hasNextLine()){
         	t += scan.nextLine();
@@ -45,6 +46,7 @@ public class index {
     }
 	
 	String[] kkma = new String[t.split("<doc id=").length-1];
+	
 	for(int i =0 ; i<kkma.length;i++) {
 		kkma[i]=t.split("<doc id=")[i+1].split("<title>")[1].split("</title>")[0]+"\n";
 		String temps=t.split("<doc id=")[i+1].split("<body>")[1].split("</body>")[0];
@@ -55,7 +57,7 @@ public class index {
 			kkma[i] += kword.getString()+ ":" +kword.getCnt()+"#";
 			
 		}
-		System.out.println(kkma[i]);
+		//System.out.println(kkma[i]);
 	}
 	
 	DocumentBuilderFactory docFacroty1 = DocumentBuilderFactory.newInstance();
@@ -85,9 +87,8 @@ public class index {
 	transformer1.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 	
 	DOMSource source1 = new DOMSource(xml1);
-	StreamResult result1 = new StreamResult(new FileOutputStream(new File("result/index.xml")));
+	StreamResult result1 = new StreamResult(new FileOutputStream(new File(path+"/index.xml")));
 	
 	transformer1.transform(source1, result1);
 	}
-	
 }
