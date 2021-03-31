@@ -10,7 +10,7 @@ public class main {
 
 	public static void main(String[] args) throws ParserConfigurationException, TransformerException, IOException, ClassNotFoundException {
 		System.out.println("202011331 이경민");
-		String path=args[0];
+		String path=args[1];
 		
 		makeCollection collection = new makeCollection(path);
 		collection.html_to_xml();
