@@ -42,23 +42,35 @@ public class indexer {
 			for(int j=0;j<id[i].split("#").length;j++) {
 				String key = id[i].split("#")[j].split(":")[0];
 				String hv="";
+				
 				if(!hashmap.containsKey(key)) {
 					double df=0,tf=0;;
 					for (int k=0;k<num;k++) {
-						if(id[k].contains("#"+key+":"))
-							df+=1;
+						
+						for(int l =0 ; l<id[k].split("#").length;l++) {
+							
+							if(id[k].split("#")[l].split(":")[0].equals(key)) {
+								df+=1;
+								break;
+							}	
+						}
+	
 					}
 					double w;
 					
 					for (int k=0;k<num;k++) {
-						if(id[k].contains("#"+key+":")) {
-							double value = Double.valueOf(id[k].split(key+":")[1].split("#")[0]);
-							tf=value;
-							w=tf*Math.log(num/df);
-							hv+=String.valueOf(k)+" "+ String.format("%.2f", Math.round(w*1000)/1000.0)+" ";
+						for(int l =0 ; l<id[k].split("#").length;l++) {
+							if(id[k].split("#")[l].split(":")[0].equals(key)) {
+								double value = Double.valueOf(id[k].split("#")[l].split(":")[1]);
+								tf=value;
+								w=tf*Math.log(num/df);
+								hv+=String.valueOf(k)+" "+ String.format("%.2f", Math.round(w*1000)/1000.0)+" ";
+							
+							}	
 						}
 					}
 					hashmap.put(key, hv);
+
 				}
 				
 				
