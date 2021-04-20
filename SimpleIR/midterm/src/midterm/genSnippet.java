@@ -45,7 +45,7 @@ public class genSnippet {
 		int b[] = new int[a.length];
 		for(int i = 0;i<t.split(" ").length;i++) {
 			for(int j=0;j<a.length;j++) {
-				if(t.split(" ")[i].equals(a[j]))
+				if(text.split(" ")[i].equals(a[j]))
 					b[j]+=1;
 			}
 		}
